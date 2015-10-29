@@ -41,7 +41,6 @@ public class Langauge {
     sourceMap.put(Strings.BENGALI,7);
     sourceMap.put(Strings.ASSAMESE,8);
     sourceMap.put(Strings.ENGLISH,20);
-    sourceMap.put("LANG_CONTEXT_DEFAULT",0);
   }
 
 }

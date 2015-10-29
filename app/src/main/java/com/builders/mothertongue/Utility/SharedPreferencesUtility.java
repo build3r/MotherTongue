@@ -14,7 +14,7 @@ public class SharedPreferencesUtility {
 
   private static final String LOG_TAG = SharedPreferencesUtility.class.getSimpleName();
   static Context context;
-  public void setSourceLangauge(Context context, String srcLang){
+  public static void setSourceLangauge(Context context, String srcLang){
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     SharedPreferences.Editor editor = sharedPreferences.edit();
     editor.putString(UserInput.inputLanguage,srcLang);

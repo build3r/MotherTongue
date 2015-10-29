@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="input_lang_array">
+        <item>Hindi</item>
+        <item>Gujarati</item>
+        <item>Punjabi</item>
+        <item>Malayalam</item>
+        <item>Tamil</item>
+        <item>Telugu</item>
+        <item>Kannada</item>
+        <item>Bengali</item>
+        <item>Assamese</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="output_lang_array">
+        <item>English</item>
+        <item>Hindi</item>
+        <item>Bengali</item>
+        <item>Gujarati</item>
+        <item>Kannada</item>
+        <item>Tamil</item>
+        <item>Telugu</item>
+        <item>Urdu</item>
+        <item>Spanish</item>
+        <item>Arabic</item>
+        <item>French</item>
+        <item>Dutch</item>
+        <item>Italian</item>
+        <item>German</item>
+        <item>Russian</item>
+    </string-array>
+</resources>

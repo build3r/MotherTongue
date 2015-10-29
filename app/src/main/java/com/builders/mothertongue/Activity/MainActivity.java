@@ -5,41 +5,50 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.builders.mothertongue.Constants.Langauge;
+import com.builders.mothertongue.Constants.Strings;
 import com.builders.mothertongue.R;
 import com.builders.mothertongue.Utility.SharedPreferencesUtility;
-import com.builders.mothertongue.listeners.ResultCallBack;
-import com.builders.mothertongue.interfaces.TranslateInterface;
 import com.builders.mothertongue.interfaces.TransliterateInterface;
-
-import com.builders.mothertongue.Events.TranslateOutput;
-import de.greenrobot.event.EventBus;
 
 
 public class MainActivity extends Activity{
 
-  EditText input;
-  TextView output;
+  Spinner input;
+  Spinner output;
   Button translate;
-  ResultCallBack resultCallBack = new ResultCallBack() {
+
+  AdapterView.OnItemSelectedListener inputItemSelectedListener = new AdapterView.OnItemSelectedListener() {
     @Override
-    public void onResultCallBack(String resultText) {
-      output.setText(resultText);
-      TranslateInterface translateInterface = new TranslateInterface();
-      try {
-        resultText = resultText.trim();
-        String targetLang = Langauge.targetMap.get(SharedPreferencesUtility.getTargetLangauge(MainActivity.this));
-        translateInterface.translate(resultText, targetLang);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+      String userSelection = parent.getItemAtPosition(position).toString();
+      SharedPreferencesUtility.setSourceLangauge(MainActivity.this,userSelection);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+      SharedPreferencesUtility.setSourceLangauge(MainActivity.this, Strings.HINDI);
     }
   };
+
+  AdapterView.OnItemSelectedListener outputItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+      String userSelection = parent.getItemAtPosition(position).toString();
+      SharedPreferencesUtility.setTargetLangauge(MainActivity.this,userSelection);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+      SharedPreferencesUtility.setTargetLangauge(MainActivity.this,Strings.ENGLISH);
+    }
+  };
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +61,18 @@ public class MainActivity extends Activity{
       Toast.makeText(this,"Connected To Reverie",Toast.LENGTH_LONG).show();
     }
     setContentView(R.layout.activity_main);
-    input = (EditText) findViewById(R.id.input);
-    output = (TextView) findViewById(R.id.output);
-    translate = (Button) findViewById(R.id.translate);
-    translate.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        int lang = Langauge.sourceMap.get(SharedPreferencesUtility.getSourceLanguage(MainActivity.this));
-        int domain = 0;
-        transliterateInterface.getTrasliterate(MainActivity.this,
-            input.getText().toString().split(" "), domain, lang, lang, resultCallBack);
-      }
-    });
+    input = (Spinner) findViewById(R.id.input);
+    ArrayAdapter<CharSequence> inputAdapter = ArrayAdapter.createFromResource(this,
+        R.array.input_lang_array, android.R.layout.simple_spinner_item);
+    inputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    input.setAdapter(inputAdapter);
+    input.setOnItemSelectedListener(inputItemSelectedListener);
+    output = (Spinner) findViewById(R.id.output);
+    ArrayAdapter<CharSequence> outputAdapter = ArrayAdapter.createFromResource(this,
+        R.array.output_lang_array, android.R.layout.simple_spinner_item);
+    outputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    output.setOnItemSelectedListener(outputItemSelectedListener);
+    output.setAdapter(outputAdapter);
   }
 
   @Override
@@ -85,21 +94,5 @@ public class MainActivity extends Activity{
       return true;
     }
     return super.onOptionsItemSelected(item);
-  }
-
-  @Override
-  public void onStart(){
-    super.onStart();
-    EventBus.getDefault().register(this);
-  }
-
-  @Override
-  public void onStop(){
-    EventBus.getDefault().unregister(this);
-    super.onStop();
-  }
-
-  public void onEventMainThread(TranslateOutput translateOutput){
-    output.setText(translateOutput.getTranslatedString());
   }
 }
