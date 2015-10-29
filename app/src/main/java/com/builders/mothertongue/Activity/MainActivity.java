@@ -1,4 +1,4 @@
-package com.builders.mothertongue;
+package com.builders.mothertongue.Activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,6 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.builders.mothertongue.R;
+import com.builders.mothertongue.listeners.ResultCallBack;
+import com.builders.mothertongue.interfaces.TranslateInterface;
+import com.builders.mothertongue.interfaces.TransliterateInterface;
+
+import com.builders.mothertongue.Events.TranslateOutput;
+import de.greenrobot.event.EventBus;
 
 
 public class MainActivity extends Activity{
@@ -73,5 +81,19 @@ public class MainActivity extends Activity{
       return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  @Override
+  public void onStart(){
+    EventBus.getDefault().register(this);
+  }
+
+  @Override
+  public void onStop(){
+    EventBus.getDefault().unregister(this);
+  }
+
+  public void onEvent(TranslateOutput translateOutput){
+    output.setText(translateOutput.getTranslatedString());
   }
 }
