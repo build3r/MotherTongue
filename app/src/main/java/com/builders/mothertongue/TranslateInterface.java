@@ -1,5 +1,15 @@
 package com.builders.mothertongue;
 
+import android.util.Log;
+
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Headers;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -7,6 +17,7 @@ import java.util.TreeMap;
  * Created by prabhasatya on 29/10/15.
  */
 public class TranslateInterface {
+  private static final String LOG_TAG = TranslateInterface.class.getSimpleName();
   Map<String,String> langMap = new TreeMap<String,String>();
 
   private void createMap() {
@@ -28,36 +39,37 @@ public class TranslateInterface {
     langMap.put("Spanish", "es");
 
   }
-//  public String translate(String text, String Lang) throws Exception{
-//    String translatedText="hello";
-//    String base = "https://www.googleapis.com/language/translate/v2?key=AIzaSyCxALdoLCRd1MlWwEHzxuTK0tPBZ6_0SNs&q=";
-//    base = base + URLEncoder.encode(text, "UTF-8")+"&target="+langMap.get(Lang);
-//    String responseString="default";
-//    OkHttpClient client = new OkHttpClient();
-//    HttpResponse response = client.execute(new HttpGet(base));
-//    StatusLine statusLine = response.getStatusLine();
-//    if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-//      ByteArrayOutputStream out = new ByteArrayOutputStream();
-//      response.getEntity().writeTo(out);
-//      responseString = out.toString();
-//      Log.d("SHABAZ", responseString);
-//      out.close();
-//      JSONObject json = new JSONObject(responseString);
-//      json = json.getJSONObject("data");
-//      JSONArray translations = json.getJSONArray("translations");
-//      json = translations.getJSONObject(0);
-//      translatedText = json.getString("translatedText");
-//
-//    } else {
-//      //Closes the connection.
-//      response.getEntity().getContent().close();
-//      throw new IOException(statusLine.getReasonPhrase());
-//    }
-//    Log.d("SHABAZ", translatedText);
-//    //Toast.makeText(this, "Message " +responseString, Toast.LENGTH_LONG).show();
-//
-//    return translatedText;
-//  }
+  public String translate(String text, String Lang) throws Exception{
+    String translatedText="hello";
+    String base = "https://www.googleapis.com/language/translate/v2?key=AIzaSyCxALdoLCRd1MlWwEHzxuTK0tPBZ6_0SNs&q=";
+    createMap();
+    base = base + URLEncoder.encode(text, "UTF-8")+"&target="+langMap.get(Lang);
+    String responseString="default";
+    OkHttpClient client = new OkHttpClient();
+    Request request =  new Request.Builder()
+        .url(base)
+        .build();
+     client.newCall(request).enqueue(new Callback() {
+      @Override
+      public void onFailure(Request request, IOException e) {
+        Log.d(LOG_TAG,Log.getStackTraceString(e));
+      }
+
+      @Override
+      public void onResponse(Response response) throws IOException {
+        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+        Headers responseHeaders = response.headers();
+        for (int i = 0; i < responseHeaders.size(); i++) {
+          Log.d(LOG_TAG,responseHeaders.name(i) + ": " + responseHeaders.value(i));
+        }
+
+        Log.d(LOG_TAG,response.body().string());
+      }
+    });
+
+    return translatedText;
+  }
 
 
 }

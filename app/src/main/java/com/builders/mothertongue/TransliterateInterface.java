@@ -35,7 +35,7 @@ public class TransliterateInterface {
         }
         String output = "";
         for(int i=0;i<arr.length;i++){
-          output = output.concat(arr[i] + "==" + map.get(arr[i]) + "\n");
+          output = output.concat(map.get(arr[i]) + " ");
         }
         resultCallBack.onResultCallBack(output);
       }

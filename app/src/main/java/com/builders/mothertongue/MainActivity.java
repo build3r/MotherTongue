@@ -1,7 +1,7 @@
 package com.builders.mothertongue;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends Activity{
 
   EditText input;
   TextView output;
@@ -20,6 +20,13 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public void onResultCallBack(String resultText) {
       output.setText(resultText);
+      TranslateInterface translateInterface = new TranslateInterface();
+      try {
+        resultText = resultText.trim();
+        translateInterface.translate(resultText,"Kannada");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
   };
 
