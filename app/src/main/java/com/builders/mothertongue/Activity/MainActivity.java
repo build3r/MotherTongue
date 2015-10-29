@@ -69,6 +69,7 @@ public class MainActivity extends Activity{
             output.setText(resultText);
             TranslateInterface translateInterface = new TranslateInterface();
             try {
+                //commit
                 resultText = resultText.trim();
                 translateInterface.translate(resultText,"Kannada");
             } catch (Exception e) {
