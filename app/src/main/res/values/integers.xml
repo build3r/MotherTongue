@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="Hindi">0</integer>
-    <integer name="Gujarati">1</integer>
-    <integer name="Punjabi">2</integer>
-    <integer name="Malayalam">3</integer>
-    <integer name="Tamil">4</integer>
-    <integer name="Telugu">5</integer>
-    <integer name="Kannada">6</integer>
-    <integer name="Bengali">7</integer>
-    <integer name="Assamese">8</integer>
-    <integer name="English">20</integer>
-    <integer name="LANG_CONTEXT_DEFAULT">0</integer>
+    <int name="Hindi">0</int>
+    <int name="Gujarati">1</int>
+    <int name="Punjabi">2</int>
+    <int name="Malayalam">3</int>
+    <int name="Tamil">4</int>
+    <int name="Telugu">5</int>
+    <int name="Kannada">6</int>
+    <int name="Bengali">7</int>
+    <int name="Assamese">8</int>
+    <int name="English">20</int>
+    <int name="LANG_CONTEXT_DEFAULT">0</int>
 </resources>
