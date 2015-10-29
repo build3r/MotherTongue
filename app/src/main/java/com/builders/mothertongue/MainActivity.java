@@ -1,17 +1,50 @@
 package com.builders.mothertongue;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity{
+
+  EditText input;
+  TextView output;
+  Button translate;
+  ResultCallBack resultCallBack = new ResultCallBack() {
+    @Override
+    public void onResultCallBack(String resultText) {
+      output.setText(resultText);
+    }
+  };
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    final TransliterateInterface transliterateInterface = new TransliterateInterface();
+    String errorString = transliterateInterface.connectToReverie(this);
+    if(!errorString.equals("")){
+      Toast.makeText(this,errorString,Toast.LENGTH_LONG).show();
+    }else{
+      Toast.makeText(this,"Connected To Reverie",Toast.LENGTH_LONG).show();
+    }
     setContentView(R.layout.activity_main);
+    input = (EditText) findViewById(R.id.input);
+    output = (TextView) findViewById(R.id.output);
+    translate = (Button) findViewById(R.id.translate);
+    translate.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        transliterateInterface.getTrasliterate(MainActivity.this,
+            input.getText().toString().split(" "), 0,
+            5, 5, resultCallBack);
+      }
+    });
   }
 
   @Override
@@ -32,7 +65,6 @@ public class MainActivity extends ActionBarActivity {
     if (id == R.id.action_settings) {
       return true;
     }
-
     return super.onOptionsItemSelected(item);
   }
 }

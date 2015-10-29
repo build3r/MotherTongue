@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MotherTongue</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="input_text">Hi</string>
     <string name="action_settings">Settings</string>
+    <string name="translate">Translate</string>
 </resources>
