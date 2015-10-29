@@ -13,11 +13,8 @@ import com.builders.mothertongue.Constants.UserInput;
 public class SharedPreferencesUtility {
 
   private static final String LOG_TAG = SharedPreferencesUtility.class.getSimpleName();
-  Context context;
-  public SharedPreferencesUtility(Context context){
-    this.context = context;
-  }
-  public void setSourceLangauge(String srcLang){
+  static Context context;
+  public void setSourceLangauge(Context context, String srcLang){
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     SharedPreferences.Editor editor = sharedPreferences.edit();
     editor.putString(UserInput.inputLanguage,srcLang);
@@ -27,12 +24,12 @@ public class SharedPreferencesUtility {
     }
   }
 
-  public String getSourceLanguage(){
+  public static String getSourceLanguage(Context context){
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     return sharedPreferences.getString(UserInput.inputLanguage,"");
   }
 
-  public void setTargetLangauge(String tgtLang){
+  public static void setTargetLangauge(Context context, String tgtLang){
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     SharedPreferences.Editor editor = sharedPreferences.edit();
     editor.putString(UserInput.outputLanguage,tgtLang);
@@ -42,7 +39,7 @@ public class SharedPreferencesUtility {
     }
   }
 
-  public String getTargetLangauge(){
+  public static String getTargetLangauge(Context context){
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     return  sharedPreferences.getString(UserInput.outputLanguage, "");
   }

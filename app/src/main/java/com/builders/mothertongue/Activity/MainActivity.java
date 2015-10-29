@@ -10,7 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.builders.mothertongue.Constants.Langauge;
 import com.builders.mothertongue.R;
+import com.builders.mothertongue.Utility.SharedPreferencesUtility;
 import com.builders.mothertongue.listeners.ResultCallBack;
 import com.builders.mothertongue.interfaces.TranslateInterface;
 import com.builders.mothertongue.interfaces.TransliterateInterface;
@@ -31,7 +33,8 @@ public class MainActivity extends Activity{
       TranslateInterface translateInterface = new TranslateInterface();
       try {
         resultText = resultText.trim();
-        translateInterface.translate(resultText,"Kannada");
+        String targetLang = Langauge.targetMap.get(SharedPreferencesUtility.getTargetLangauge(MainActivity.this));
+        translateInterface.translate(resultText, targetLang);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -55,9 +58,10 @@ public class MainActivity extends Activity{
     translate.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        int lang = Langauge.sourceMap.get(SharedPreferencesUtility.getSourceLanguage(MainActivity.this));
+        int domain = 0;
         transliterateInterface.getTrasliterate(MainActivity.this,
-            input.getText().toString().split(" "), 0,
-            5, 5, resultCallBack);
+            input.getText().toString().split(" "), domain, lang, lang, resultCallBack);
       }
     });
   }
@@ -85,15 +89,17 @@ public class MainActivity extends Activity{
 
   @Override
   public void onStart(){
+    super.onStart();
     EventBus.getDefault().register(this);
   }
 
   @Override
   public void onStop(){
     EventBus.getDefault().unregister(this);
+    super.onStop();
   }
 
-  public void onEvent(TranslateOutput translateOutput){
+  public void onEventMainThread(TranslateOutput translateOutput){
     output.setText(translateOutput.getTranslatedString());
   }
 }
