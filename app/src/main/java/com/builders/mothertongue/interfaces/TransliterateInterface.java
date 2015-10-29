@@ -1,6 +1,7 @@
 package com.builders.mothertongue.interfaces;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.builders.mothertongue.listeners.ResultCallBack;
 import com.reverie.lm.LM;
@@ -15,6 +16,7 @@ import java.util.Set;
  * Interface to Reverie API
  */
 public class TransliterateInterface {
+  final String tag = TransliterateInterface.class.getSimpleName();
   public String reverieSDKKey = "e5aaaacb7b15606413df7cfa0144c6324249";
 
 
@@ -38,6 +40,7 @@ public class TransliterateInterface {
         for(int i=0;i<arr.length;i++){
           output = output.concat(map.get(arr[i]) + " ");
         }
+        Log.d(tag, "Reverie is good "+output);
         resultCallBack.onResultCallBack(output);
       }
     });

@@ -2,7 +2,6 @@ package com.builders.mothertongue.interfaces;
 
 import android.util.Log;
 
-import com.builders.mothertongue.Constants.Langauge;
 import com.builders.mothertongue.Events.TranslateOutput;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -14,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import de.greenrobot.event.EventBus;
@@ -27,7 +27,7 @@ public class TranslateInterface {
   public void translate(String text, String Lang) throws Exception{
     String translatedText="hello";
     String base = "https://www.googleapis.com/language/translate/v2?key=AIzaSyAv5VxIekPodp44C0__vAVIJ7vAWO9PRVE&q=";
-    base = base + URLEncoder.encode(text, "UTF-8")+"&target="+ Langauge.targetMap.get(Lang);
+    base = base + URLEncoder.encode(text, "UTF-8")+"&target="+ Lang;
     OkHttpClient client = new OkHttpClient();
     Request request =  new Request.Builder()
         .url(base)
@@ -49,7 +49,7 @@ public class TranslateInterface {
           JSONArray translations = json.getJSONArray("translations");
           json = translations.getJSONObject(0);
           String translatedText = json.getString("translatedText");
-          EventBus.getDefault().post(new TranslateOutput(translatedText));
+          EventBus.getDefault().post(new TranslateOutput(URLDecoder.decode(translatedText,"UTF-8")));
         } catch (JSONException e) {
           e.printStackTrace();
         }
