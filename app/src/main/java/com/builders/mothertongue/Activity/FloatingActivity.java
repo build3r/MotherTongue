@@ -4,8 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.NumberPicker;
 
 import com.builders.mothertongue.Constants.Strings;
 import com.builders.mothertongue.R;
@@ -14,8 +13,8 @@ import com.tooleap.sdk.TooleapActivities;
 
 public class FloatingActivity extends TooleapActivities.Activity
 {
-    Spinner input;
-    Spinner output;
+    NumberPicker input;
+    NumberPicker output;
     AdapterView.OnItemSelectedListener inputItemSelectedListener = new AdapterView.OnItemSelectedListener()
     {
         @Override
@@ -53,23 +52,41 @@ public class FloatingActivity extends TooleapActivities.Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_floating);
-        input = (Spinner) findViewById(R.id.input);
+        input = (NumberPicker) findViewById(R.id.input);
+        final String[] inputArray = getResources().getStringArray(R.array.input_lang_array);
 
-        ArrayAdapter<CharSequence> inputAdapter = ArrayAdapter.createFromResource(this,
-                R.array.input_lang_array,  android.R.layout.simple_spinner_item);
-        inputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        input.setAdapter(inputAdapter);
+        input.setMinValue(0);
+        input.setMaxValue(inputArray.length - 1);
+        input.setDisplayedValues(inputArray);
         String input_lang = SharedPreferencesUtility.getSourceLanguage(this);
-        input.setSelection(getInputPosition(input_lang));
-        input.setOnItemSelectedListener(inputItemSelectedListener);
-        output = (Spinner) findViewById(R.id.output);
-        ArrayAdapter<CharSequence> outputAdapter = ArrayAdapter.createFromResource(this,
-                R.array.output_lang_array, android.R.layout.simple_spinner_item);
-        outputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        input.setValue(getInputPosition(input_lang));
+        input.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
+
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
+                String userSelection = inputArray[newValue];
+                SharedPreferencesUtility.setSourceLangauge(FloatingActivity.this,userSelection);
+            }
+        });
+        final String[] outputArray = getResources().getStringArray(R.array.output_lang_array);
+        output = (NumberPicker) findViewById(R.id.output);
+        output.setMinValue(0);
+        output.clearFocus();
+        output.setMaxValue(outputArray.length - 1);
+
+        output.setDisplayedValues(outputArray);
         String output_lang = SharedPreferencesUtility.getSourceLanguage(this);
-        input.setSelection(getOutputPosition(output_lang));
-        output.setOnItemSelectedListener(outputItemSelectedListener);
-        output.setAdapter(outputAdapter);
+        input.setValue(getOutputPosition(output_lang));
+        output.setOnValueChangedListener(new NumberPicker.OnValueChangeListener()
+        {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue)
+            {
+                String userSelection = outputArray[newValue];
+                SharedPreferencesUtility.setTargetLangauge(FloatingActivity.this, userSelection);
+            }
+        });
+
     }
     private int getInputPosition(String input_lang)
     {

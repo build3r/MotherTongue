@@ -41,14 +41,12 @@
         android:layout_marginBottom="5dp"
         android:layout_weight="0.09"/>
 
-    <Spinner
-        android:layout_marginTop="40dp"
+    <NumberPicker
         android:id="@+id/input"
-        android:gravity="center"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.09"
-        />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerInParent="true"  />
     <View
         android:layout_width="fill_parent"
         android:layout_height="3dp"
@@ -68,13 +66,15 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         android:layout_weight="0.09"/>
-    <Spinner
+
+
+
+    <NumberPicker
         android:layout_marginTop="20dp"
         android:id="@+id/output"
         android:gravity="center"
         android:layout_width="fill_parent"
-        android:layout_weight="0.09"
-        android:layout_height="0dp" />
+        android:layout_height="wrap_content" />
     <View
         android:layout_width="fill_parent"
         android:layout_height="3dp"

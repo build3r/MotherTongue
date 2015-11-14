@@ -20,7 +20,7 @@ public class TransliterateInterface {
   public String reverieSDKKey = "e5aaaacb7b15606413df7cfa0144c6324249";
 
 
-  public void getTrasliterate(Context context, String inputText[], int domain, int originalLang,
+  public void getTrasliterate(Context context, final String inputText[], int domain, int originalLang,
                                 int targetLang, final ResultCallBack resultCallBack) {
 
     RevTransliteration_online trans_on = new RevTransliteration_online(context);
@@ -40,7 +40,9 @@ public class TransliterateInterface {
         for(int i=0;i<arr.length;i++){
           output = output.concat(map.get(arr[i]) + " ");
         }
-        Log.d(tag, "Reverie is good "+output);
+        Log.d(tag, "Reverie is good " + output);
+        if(output==null || output.isEmpty())
+          output = inputText[0];
         resultCallBack.onResultCallBack(output);
       }
     });
